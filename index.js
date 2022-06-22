@@ -1,15 +1,39 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser')
 const path = require('path');
+const port = process.env.PORT || 8080
+const Pool = require('pg').Pool
+const pool = new Pool({
+  user: 'malay',
+  host: 'localhost',
+  database: 'api',
+  password: 'malay9418',
+  port: 5432,
+})
+//config
+app.use(bodyParser.json())
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+)
 //app functionality
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname+'/index.html'))
+  res.send("home")
+//  res.sendFile(path.join(__dirname+'/index.html'))
 });
-app.get('/about', function (req, res) {
-  res.send("the about page")
+app.get('/users', function (req, res) {
+  var id = req.query.id;
+  pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+    if (error) {
+      throw error
+    }
+    res.status(200).json(results.rows)
+  });
 });
 //server
-var server = app.listen(process.env.PORT || 8080, function () {
+var server = app.listen(port, function () {
   var host = server.address().address;
   var port = server.address().port;
   console.log('app listening at http://%s:%s', host, port);  
