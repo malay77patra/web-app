@@ -10,6 +10,7 @@ const pool = new Pool({
   database: 'd4279nbdqbq5to',
   password: '20a1e0d208f7e076f515ccaccba2351e6d44bfd4afdbfc8277887e5c311f361f',
   port: 5432,
+  ssl: { rejectUnauthorized: false }
 })
 //config
 app.use(bodyParser.json())
