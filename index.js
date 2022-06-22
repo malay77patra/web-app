@@ -5,10 +5,10 @@ const path = require('path');
 const port = process.env.PORT || 8080
 const Pool = require('pg').Pool
 const pool = new Pool({
-  user: 'malay',
-  host: 'localhost',
-  database: 'api',
-  password: 'malay9418',
+  user: 'cxxzaoysyqunzf',
+  host: 'ec2-52-71-23-11.compute-1.amazonaws.com',
+  database: 'd4279nbdqbq5to',
+  password: '20a1e0d208f7e076f515ccaccba2351e6d44bfd4afdbfc8277887e5c311f361f',
   port: 5432,
 })
 //config
