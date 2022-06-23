@@ -21,17 +21,36 @@ app.use(
 )
 //app functionality
 app.get('/', function (req, res) {
-  res.send("home")
-//  res.sendFile(path.join(__dirname+'/index.html'))
-});
-app.get('/users', function (req, res) {
-  var id = req.query.id;
-  pool.query('SELECT * FROM users WHERE id = $1', [id], (error, results) => {
+  pool.query('SELECT * FROM data', (error, results) => {
     if (error) {
       throw error
     }
     res.status(200).json(results.rows)
   });
+//  res.sendFile(path.join(__dirname+'/index.html'))
+});
+app.get('/data', function (req, res) {
+  var id = req.query.id;
+  pool.query('SELECT * FROM data WHERE id = $1', [id], (error, results) => {
+    if (error) {
+      throw error
+    }
+    res.status(200).json(results.rows)
+  });
+});
+app.get('/create', function (req, res) {
+  var date = req.query.date;
+  var info = req.query.info;
+  if (date != undefined && info != undefined) {
+    pool.query('INSERT INTO data (date, info) VALUES ($1, $2)', [date, info], (error, results) => {
+      if (error) {
+        throw error
+      }
+      res.status(201).send("done")
+    });
+  }else {
+  res.send("not dedined")
+  }
 });
 //server
 var server = app.listen(port, function () {
