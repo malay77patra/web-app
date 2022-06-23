@@ -21,7 +21,7 @@ app.use(
 )
 //app functionality
 app.get('/', function (req, res) {
-  pool.query('SELECT * FROM data', (error, results) => {
+  pool.query('SELECT sub FROM data', (error, results) => {
     if (error) {
       throw error
     }
@@ -40,17 +40,27 @@ app.get('/data', function (req, res) {
 });
 app.get('/create', function (req, res) {
   var date = req.query.date;
+  var sub = req.query.sub;
   var info = req.query.info;
-  if (date != undefined && info != undefined) {
-    pool.query('INSERT INTO data (date, info) VALUES ($1, $2)', [date, info], (error, results) => {
+  if (date != undefined && sub != undefined && info != undefined) {
+    pool.query('INSERT INTO data (date,sub,info) VALUES ($1, $2, $3)', [date,sub,info], (error, results) => {
       if (error) {
         throw error
       }
       res.status(201).send("done")
     });
   }else {
-  res.send("not dedined")
+  res.send("something is not dedined")
   }
+});
+app.get('/delete', function (req, res) {
+  var id = req.query.id;
+  pool.query('DELETE FROM data WHERE id = $1', [id], (error, results) => {
+    if (error) {
+      throw error
+    }
+    res.status(200).send("deleted succesfully")
+  });
 });
 //server
 var server = app.listen(port, function () {
